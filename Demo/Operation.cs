@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Demo
 {
@@ -26,6 +28,11 @@ namespace Demo
             }
             Tuple<int, int> t = new Tuple<int, int>(1, 2);
             return (1, 2);
+        }
+
+        public decimal Addition(decimal x, decimal y)
+        {
+            return x + y;
         }
     }
 }
