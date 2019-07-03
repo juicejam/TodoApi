@@ -8,6 +8,11 @@ namespace Demo
 {
     public class Operation
     {
+        public static void ExecuteFunc()
+        {
+            Console.WriteLine(Fun2());
+        }
+
         public static Tuple<int,int>  Fun1()
         {
             var fibonacciNumbers = new List<long> { 1, 1 };
@@ -27,7 +32,9 @@ namespace Demo
                 fibonacciNumbers.Add(fibonacciNumbers[i - 1] + fibonacciNumbers[i - 2]);
             }
             Tuple<int, int> t = new Tuple<int, int>(1, 2);
-            return (1, 2);
+            (int,int) valueTupleA=(1,2);
+            valueTupleA.Item1 = 20;
+            return valueTupleA;
         }
 
         public decimal Addition(decimal x, decimal y)

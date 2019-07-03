@@ -211,6 +211,99 @@ namespace Demo
 
         #endregion
 
+        #region 同步
+        //同步三条件：多段代码、共享数据、修改数据
 
+        public static void ExecuteSynchronizeCode()
+        {
+            //Console.WriteLine(BadParallelSum(new int[] { 1, 1, 1, 3, 4 }));
+            var t= Task.Run(PlayWithStackAsync);
+            t.Wait();
+        }
+
+        //坏代码
+        static int BadParallelSum(IEnumerable<int> values)
+        {
+            int result = 0;
+            Parallel.ForEach(source: values,
+                localInit: () => 0,
+                body: (item, state, localValue) => localValue + item,
+                localFinally: localValue =>
+                {
+                    result += localValue;
+                }
+            );
+            return result;
+        }
+
+        static async Task<bool> PlayWithStackAsync()
+        {
+            var stack = ImmutableStack<int>.Empty;
+            var task1 = Task.Run(() => { stack.Push(3).Peek(); });//Peek() 返回堆栈顶部的对象而不删除它。
+            var task2 = Task.Run(() => { stack = stack.Push(5); });
+            var task3 = Task.Run(() => { stack = stack.Push(7); });
+            await Task.WhenAll(task1, task2, task3);
+            return stack.IsEmpty;
+        }
+
+        #endregion
+
+        #region 阻塞锁
+
+        public void ExecuteBlockMethod()
+        {
+            var t1 = Task.Run(() => BlockingLockClass.Increment());
+            
+            t1.Wait();
+        }
+
+        static class BlockingLockClass
+        {
+            //这个锁会保护 _value
+            private static readonly object Mutex = new object();
+            private static int _value;
+            private static int _noLockValue;
+
+            public static void Increment()
+            {
+                lock (Mutex)
+                {
+                    _value = _value + 1;
+                }
+            }
+
+            public static void NoLockMethod()
+            {
+                _noLockValue = _noLockValue + 1;
+            }
+        }
+
+        #endregion
+
+        #region 异步锁
+
+        static class AsyncLockClass
+        {
+            //这个锁保护_value
+            private static readonly SemaphoreSlim Mutex=new SemaphoreSlim(1);
+            private static int _value;
+
+            public static async Task DelayAndIncrementAsync()
+            {
+                await Mutex.WaitAsync();
+                try
+                {
+                    var oldValue = _value;
+                    await Task.Delay(TimeSpan.FromSeconds(oldValue));
+                    _value = oldValue + 1;
+                }
+                finally
+                {
+                    Mutex.Release();
+                }
+            }
+        }
+
+        #endregion
     }
 }

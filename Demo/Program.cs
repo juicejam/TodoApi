@@ -9,12 +9,14 @@ namespace Demo
     {
         static void Main(string[] args)
         {
-
+            //Operation.ExecuteFunc();
             //AsyncDemo.ExecuteFirstRespondingUrl();
             //AsyncDemo.ExecuteTaskWhenAll();
             //AsyncDemo.ExecueteThrowException();
             //AsyncDemo.ExecuteParallelFor();
-            AsyncDemo.ConcurrentDictionaryMethod();
+            //AsyncDemo.ConcurrentDictionaryMethod();
+            AsyncDemo.ExecuteSynchronizeCode();
+
         }
     }
 }
