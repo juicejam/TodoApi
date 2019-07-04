@@ -250,31 +250,34 @@ namespace Demo
 
         #region 阻塞锁
 
-        public void ExecuteBlockMethod()
+        public static void ExecuteBlockMethod()
         {
-            var t1 = Task.Run(() => BlockingLockClass.Increment());
-            
-            t1.Wait();
+            //阻塞锁测试
+            Parallel.For(0, 3000, i => BlockingLockClass.NoLockMethod());
+            Console.WriteLine(BlockingLockClass.NoLockValue);
+            Parallel.For(0, 3000, i => BlockingLockClass.Increment());
+            Console.WriteLine(BlockingLockClass.Value);
         }
 
-        static class BlockingLockClass
+        public static class BlockingLockClass
         {
             //这个锁会保护 _value
             private static readonly object Mutex = new object();
-            private static int _value;
-            private static int _noLockValue;
+            public static int Value { get; set; }
+            public static int NoLockValue { get; set; }
+            
 
             public static void Increment()
             {
                 lock (Mutex)
                 {
-                    _value = _value + 1;
+                    Value = Value + 1;
                 }
             }
 
             public static void NoLockMethod()
             {
-                _noLockValue = _noLockValue + 1;
+                NoLockValue = NoLockValue + 1;
             }
         }
 
@@ -282,28 +285,74 @@ namespace Demo
 
         #region 异步锁
 
+        public static void ExecuteAsyncLockMethod()
+        {
+            //异步无锁执行
+            Task[] noLockTask = new Task[10000];
+            for (int i = 0; i < 10000; i++)
+            {
+                noLockTask[i] = AsyncLockClass.NoLockDelayAndIncrementAsync();
+            }
+            Task.WaitAll(noLockTask);
+            Console.WriteLine(AsyncLockClass.NoLockvalue);
+            Console.WriteLine("异步无锁执行完毕");
+
+            //异步锁测试
+            Task[] task = new Task[10000];
+            for (int i = 0; i < 10000; i++)
+            {
+                task[i] = AsyncLockClass.DelayAndIncrementAsync();
+            }
+            Task.WaitAll(task);
+            Console.WriteLine(AsyncLockClass.Value);
+            Console.WriteLine("异步锁执行完毕");
+        }
         static class AsyncLockClass
         {
             //这个锁保护_value
             private static readonly SemaphoreSlim Mutex=new SemaphoreSlim(1);
-            private static int _value;
-
+            public static int Value;
+            public static int NoLockvalue;
             public static async Task DelayAndIncrementAsync()
             {
                 await Mutex.WaitAsync();
                 try
                 {
-                    var oldValue = _value;
-                    await Task.Delay(TimeSpan.FromSeconds(oldValue));
-                    _value = oldValue + 1;
+                    await Task.Delay(TimeSpan.FromMilliseconds(10));
+                    Value = Value + 1;
                 }
                 finally
                 {
                     Mutex.Release();
                 }
             }
+            public static async Task NoLockDelayAndIncrementAsync()
+            {
+                await Task.Delay(TimeSpan.FromMilliseconds(10));
+                NoLockvalue = NoLockvalue + 1;
+            }
         }
 
         #endregion
+
+        #region 调度
+
+        public static void Scheduling()
+        {
+            Task<int> task = Task.Run(async () =>
+            {
+                await Task.Delay(TimeSpan.FromSeconds(5));
+                return 13;
+            });
+            Console.WriteLine(task.Result);
+
+            
+         }
+
+
+
+        #endregion
+
+
     }
 }

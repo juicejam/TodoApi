@@ -15,8 +15,10 @@ namespace Demo
             //AsyncDemo.ExecueteThrowException();
             //AsyncDemo.ExecuteParallelFor();
             //AsyncDemo.ConcurrentDictionaryMethod();
-            AsyncDemo.ExecuteSynchronizeCode();
-
+            //AsyncDemo.ExecuteSynchronizeCode();
+            //AsyncDemo.ExecuteBlockMethod();
+            //AsyncDemo.ExecuteAsyncLockMethod();
+            AsyncDemo.Scheduling();
         }
     }
 }
