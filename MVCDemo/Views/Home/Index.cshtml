@@ -29,4 +29,23 @@
         <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
     </div>
 </div>
-<input display="none" type="text" value="312312" disabled="disabled" />
+<input id="button" value="点击试试" type="button"/>
+<input id="show" type="text" value="10"/>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script>
+    $(function() {
+        $("#button").on("click",
+            function() {
+                $.ajax({
+                    url: "/Home/AjaxPost",
+                    type: "POST",
+                    data: { "num": $("#show").val() },
+                    dataType: "json",
+                    success: function(data) {
+                        alert("请求成功");
+                        $("#show").val(data);
+                    }
+                });
+            });
+    });
+</script>

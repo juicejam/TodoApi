@@ -1,12 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Globalization;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Demo
 {
-    class Program
+    static class Program
     {
+        
         static void Main(string[] args)
         {
             //Operation.ExecuteFunc();
@@ -18,7 +23,14 @@ namespace Demo
             //AsyncDemo.ExecuteSynchronizeCode();
             //AsyncDemo.ExecuteBlockMethod();
             //AsyncDemo.ExecuteAsyncLockMethod();
-            AsyncDemo.Scheduling();
+            //AsyncDemo.Scheduling();
+
+            
+
+
         }
+
+
+
     }
 }
