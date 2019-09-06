@@ -15,8 +15,8 @@ namespace LeetCode1
             Program p = new Program();
             //p.ExecuteReverse();
             //p.ExecuteIsPalindrome();
-            p.ExeRemanToInt();
-
+            //p.ExeRemanToInt();
+            p.ExeRemoveDuplicate();
         }
 
         #region 7.给出一个 32 位的有符号整数，你需要将这个整数中每位上的数字进行反转。
@@ -157,6 +157,51 @@ namespace LeetCode1
 
             list.ForEach(m => num += specialDic[m]);
             return num;
+        }
+        #endregion
+
+        #region 26. 删除排序数组中的重复项
+
+        public void ExeRemoveDuplicate()
+        {
+            RemoveDuplicates(new[] {0, 0, 1, 1, 1, 2, 2, 3, 3, 4});
+        }
+        
+        public int RemoveDuplicates(int[] nums)
+        {
+            if (nums == null)
+            {
+                return 0;
+            }
+
+            int i = 0;
+            for (int j = 1; j < nums.Length; j++)
+            {
+                if (nums[i] != nums[j])
+                {
+                    i++;
+                    nums[i] = nums[j];
+                }
+            }
+
+            foreach (var item in nums)
+            {
+                Console.WriteLine(item);
+            }
+            return 0;
+        }
+        #endregion
+
+        #region 14. 最长公共前缀
+
+        public void ExeLongestCommonPrefix()
+        {
+
+        }
+
+        public string LongestCommonPrefix(string[] strs)
+        {
+            return "";
         }
         #endregion
     }
