@@ -46,5 +46,36 @@ namespace Demo
             }
         }
         #endregion
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void BubbleSort()
+        {
+            for (var i = 0; i < n - 1; i++)
+            {
+                var exchange = false;
+                for (var j = n - 2; j >= i; j--)
+                {
+                    if (array[j] > array[j + 1])
+                    {
+                        var tempNum = array[j];
+                        array[j] = array[j + 1];
+                        array[j + 1] = tempNum;
+                        exchange = true;
+                    }
+                }
+
+                if (!exchange)
+                {
+                    break;
+                }
+            }
+
+            for (int x = 0; x < n; x++)
+            {
+                Console.Write(array[x] + " ");
+            }
+        }
     }
 }

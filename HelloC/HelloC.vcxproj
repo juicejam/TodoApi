@@ -115,6 +115,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="201810f43.cpp" />
+    <ClCompile Include="201811A.cpp" />
+    <ClCompile Include="201811B.cpp" />
+    <ClCompile Include="FrindFunctions.cpp" />
     <ClCompile Include="hello.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
