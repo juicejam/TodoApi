@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 
 namespace Demo
 {
@@ -32,5 +33,11 @@ namespace Demo
         {
             return $"{Name}:{Price}";
         }
+    }
+
+    public class ProductB
+    {
+        public string name_b { get; set; }
+        public decimal price_b { get; set; }
     }
 }

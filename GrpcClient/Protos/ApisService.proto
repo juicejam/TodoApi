@@ -1,0 +1,114 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+
+option csharp_namespace = "GrpcServices.Azure";
+
+package Azure;
+
+service ApisService {
+	rpc CreateOrUpdate (CreateOrUpdateApisParameter) returns (ApimBaseModel);
+	rpc Update (UpdateApisParameter) returns (ApimBaseModel);
+	rpc Delete (DeleteApisParameter) returns (ApimBaseModel);
+}
+
+message ApimBaseModel {
+    sint32 statusCode=1;
+    string content=2;
+}
+
+
+message DeleteApisParameter{
+	google.protobuf.StringValue apiId = 1;
+	google.protobuf.BoolValue deleteRevisions = 2;
+}
+
+
+message UpdateApisParameter {
+	google.protobuf.StringValue apiId = 1;
+	UpdateApisRequest requestBody = 2;
+}
+
+message CreateOrUpdateApisParameter{
+	google.protobuf.StringValue apiId = 1;
+	AddOrUpdateApis requestBody = 2;
+}
+
+message AddOrUpdateApis{
+	google.protobuf.StringValue apiType = 1;//Enum ["http","soap"]
+	ApiVersionSetContractDetails apiVersionSet = 2;
+	google.protobuf.StringValue displayName = 3;
+	google.protobuf.StringValue format = 4;
+	google.protobuf.StringValue path = 5;
+	repeated google.protobuf.StringValue protocols = 6;
+	google.protobuf.StringValue serviceUrl = 7;
+	google.protobuf.StringValue sourceApiId = 8;
+	google.protobuf.StringValue value = 9;
+	WsdlSelector wsdlSelector = 10;
+	google.protobuf.StringValue description = 11;
+	google.protobuf.StringValue apiRevision = 12;
+	google.protobuf.StringValue apiRevisionDescription = 13;
+	google.protobuf.StringValue apiVersion = 14;
+	google.protobuf.StringValue apiVersionDescription = 15;
+	google.protobuf.StringValue apiVersionSetId = 16;
+	AuthenticationSettingsContract authenticationSettings = 17;
+	google.protobuf.BoolValue isCurrent = 18;
+	SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames = 19;
+	google.protobuf.BoolValue subscriptionRequired = 20;
+}
+
+message WsdlSelector
+{
+	google.protobuf.StringValue wsdlEndpointName = 1;
+	google.protobuf.StringValue wsdlServiceName = 2;
+}
+
+message ApiVersionSetContractDetails{
+	google.protobuf.StringValue description = 1;
+	google.protobuf.StringValue id = 2;
+	google.protobuf.StringValue name = 3;
+	google.protobuf.StringValue versionHeaderName = 4;
+	google.protobuf.StringValue versionQueryName = 5;
+	google.protobuf.StringValue versioningScheme = 6; //enum:["Header","Query","Segment"]
+}
+
+message UpdateApisRequest{
+	UpdateApis properties = 1;
+}
+
+message UpdateApis{
+	google.protobuf.StringValue apiRevision = 1;
+	google.protobuf.StringValue apiRevisionDescription = 2;
+	google.protobuf.StringValue apiVersion = 3;
+	google.protobuf.StringValue apiVersionDescription = 4;
+	google.protobuf.StringValue apiVersionSetId = 5;
+	AuthenticationSettingsContract authenticationSettings = 6;
+	google.protobuf.StringValue description = 7;
+	google.protobuf.StringValue displayName = 8;
+	google.protobuf.BoolValue isCurrent = 9;
+	google.protobuf.StringValue path = 10;
+	repeated google.protobuf.StringValue protocols = 11;
+	google.protobuf.StringValue serviceUrl = 12;
+	SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames = 13;
+	google.protobuf.BoolValue subscriptionRequired = 14;
+}
+
+message AuthenticationSettingsContract{
+	OAuth2AuthenticationSettingsContract oAuth2 = 1;
+	OpenIdAuthenticationSettingsContract openid = 2;
+}
+
+message OAuth2AuthenticationSettingsContract{
+	google.protobuf.StringValue authorizationServerId = 1;
+	google.protobuf.StringValue scope = 2;
+}
+
+message OpenIdAuthenticationSettingsContract{
+	repeated google.protobuf.StringValue bearerTokenSendingMethods = 1;
+	google.protobuf.StringValue openidProviderId = 2;
+}
+
+message SubscriptionKeyParameterNamesContract{
+	google.protobuf.StringValue header = 1;
+	google.protobuf.StringValue query = 2;
+}

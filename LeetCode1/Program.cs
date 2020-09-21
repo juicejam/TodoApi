@@ -16,7 +16,20 @@ namespace LeetCode1
             //p.ExecuteReverse();
             //p.ExecuteIsPalindrome();
             //p.ExeRemanToInt();
-            p.ExeRemoveDuplicate();
+            //p.ExeRemoveDuplicate();
+
+            p.ExeFullPackage();
+
+
+
+
+
+
+
+
+
+
+
         }
 
         #region 7.给出一个 32 位的有符号整数，你需要将这个整数中每位上的数字进行反转。
@@ -204,5 +217,47 @@ namespace LeetCode1
             return "";
         }
         #endregion
+
+        #region 
+        //总体积为T的背包，n件物品体积分别是w1,w2,...,wn，找出若干件恰好装满背包。找出满足条件的解。
+        //例如，当T=10时，各件物品的体积时{1，8，4，3，5，2}
+        //时，可找到下列4组解：
+        //（1，4，3，2），（8，2），（1，4，5），（3，5，2）。
+        public void ExeFullPackage()
+        {
+            FullPackage(new []{ 1,8,4,3,5,2},10);
+        }
+
+        public List<List<int>> FullPackage(int[] w, int target)
+        {
+            w = w.OrderBy(m => m).ToArray();
+
+            
+            var result = new List<List<int>>();
+            Leaf(0, w, target, result);
+            return result;
+        }
+
+       //当前下标 
+        List<int> Leaf(int startIndex, int[] w, int target, List<List<int>> result)
+        {
+            //分别循环每个数
+            //排除自身减其他数，等于0匹配成功
+            var list = new List<int>();
+            for (int i = startIndex; i < w.Length; i++)
+            {
+                var child = target - w[i];
+                if (child > 0)
+                {
+                    list.Add(w[i]);
+                }
+            }
+            return list;
+        }
+        #endregion
+
     }
 }
+
+
+

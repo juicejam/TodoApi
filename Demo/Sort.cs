@@ -22,6 +22,11 @@ namespace Demo
             }
             Console.WriteLine();
         }
+        public void CallFunction()
+        {
+            InsertSort();
+            BubbleSort();
+        }
 
         #region 直接插入
         public void InsertSort()

@@ -25,6 +25,20 @@ namespace Demo
             public string Name { get; set; }
         }
 
+        public void CallFunction()
+        {
+            //ExecuteFirstRespondingUrl();
+            //ExecuteTaskWhenAll();
+            //ExecueteThrowException();
+            //ExecuteParallelFor();
+            //ConcurrentDictionaryMethod();
+            //ExecuteSynchronizeCode();
+            //ExecuteBlockMethod();
+            //ExecuteAsyncLockMethod();
+            //Scheduling();
+            GetSharedIntegerAsync();
+        }
+
         #region FirstRespondingUrl
 
         public static void ExecuteFirstRespondingUrl()
@@ -353,6 +367,22 @@ namespace Demo
 
         #endregion
 
+        #region 
+        static int _simpleValue;
+        static readonly Lazy<Task<int>> MySharedAsyncInteger =
+            new Lazy<Task<int>>(async () =>
+            {
+                await Task.Delay(TimeSpan.FromSeconds(2)).ConfigureAwait(false);
+                return _simpleValue++;
+            });
 
+        async Task GetSharedIntegerAsync()
+        {
+            int sharedValue = await MySharedAsyncInteger.Value;
+            Console.WriteLine(sharedValue);
+        }
+
+
+        #endregion
     }
 }
