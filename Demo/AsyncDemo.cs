@@ -28,6 +28,7 @@ namespace Demo
         public void CallFunction()
         {
             //ExecuteFirstRespondingUrl();
+            SingleTask();
             //ExecuteTaskWhenAll();
             //ExecueteThrowException();
             //ExecuteParallelFor();
@@ -36,7 +37,31 @@ namespace Demo
             //ExecuteBlockMethod();
             //ExecuteAsyncLockMethod();
             //Scheduling();
-            GetSharedIntegerAsync();
+            //GetSharedIntegerAsync();
+        }
+
+        public void SingleTask()
+        {
+            var t = DelayAndReturnAsync(3);
+            t.Wait();
+            //if (t.Result == 3)
+            //{
+            //    Console.WriteLine("等待方法体执行完成");
+            //}
+            //Task.Run(() =>
+            //{
+            //    var t= DelayAndReturnAsync(seconds);
+            //    var result = t.Result;
+            //    if (result == 0)
+            //    {
+            //        Console.WriteLine("执行失败");
+            //    }
+            //    else
+            //    {
+            //        Console.WriteLine("执行成功"+result);
+            //    }
+            //});
+            Console.WriteLine("返回");
         }
 
         #region FirstRespondingUrl
@@ -71,8 +96,11 @@ namespace Demo
 
         public static void ExecuteTaskWhenAll()
         {
+            Console.WriteLine("任务开始：");
             var t = Task.Run(ProcessTaskAsync);
-            t.Wait();
+            Console.WriteLine("任务执行中");
+            //t.Wait();
+            Console.WriteLine("等待任务结束");
         }
 
         static async Task<int> DelayAndReturnAsync(int val)
@@ -84,8 +112,8 @@ namespace Demo
         static async Task ProcessTaskAsync()
         {
             //创建任务队列
-            Task<int> taskA = DelayAndReturnAsync(2);
-            Task<int> taskB = DelayAndReturnAsync(3);
+            Task<int> taskA = DelayAndReturnAsync(5);
+            Task<int> taskB = DelayAndReturnAsync(10);
             Task<int> taskC = DelayAndReturnAsync(1);
             Task<int>[] tasks = new[] { taskA, taskB, taskC };
 
@@ -93,10 +121,10 @@ namespace Demo
             var processingTasks = tasks.Select(async t =>
             {
                 var result = await t;
-                Trace.WriteLine($"{result}----------------------------------");
+                //Trace.WriteLine($"{result}----------------------------------");
+                Console.WriteLine($"{result}----------------------------------");
             }).ToArray();
             await Task.WhenAll(processingTasks);
-
             //顺序执行
             //foreach (var task in tasks)
             //{

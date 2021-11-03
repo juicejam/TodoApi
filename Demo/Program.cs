@@ -1,32 +1,16 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Diagnostics;
-using System.Dynamic;
-using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Security.Cryptography;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Web;
 using System.Xml.Linq;
-using AutoMapper;
-using Demo.Tools;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace Demo
 {
-    static class Program
+    class Program
     {
-
-        static void Main(string[] args)
-        {
+       static void Main(string[] args)
+       {
             //new LinqExpress().CallFunction();
             //Operation.ExecuteFunc();
             //new AsyncDemo().CallFunction();
@@ -109,25 +93,124 @@ namespace Demo
             //{
             //    Console.WriteLine(item);
             //}
-            DateTime.TryParse("2019-10-31 13:30:23", out var expiryDate);
-            if (expiryDate.Year == 1)
-            {
-                Console.WriteLine("错误");
-            }
+            //DateTime.TryParse("2019-10-31 13:30:23", out var expiryDate);
+            //if (expiryDate.Year == 1)
+            //{
+            //    Console.WriteLine("错误");
+            //}
 
-            var tempDate = expiryDate.AddMonths(1);
-            expiryDate = new DateTime(tempDate.Year, tempDate.Month, 1).AddSeconds(-1);
+            //var tempDate = expiryDate.AddMonths(1);
+            //expiryDate = new DateTime(tempDate.Year, tempDate.Month, 1).AddSeconds(-1);
 
             //date.AddMonths(1).AddDays(-date.AddMonths(1).Day).ToString();
             //var test =expiryDate.AddDays(1 - DateTime.Now.Day).Date.AddMonths(1).AddSeconds(-1);
+
+
+            //var page = 1;
+            //int pageCount;//5页
+            //var pageSize = 100;
+            //do
+            //{
+            //    var apiListRrl = $"/api/Apis/List?page={page}&pageSize={pageSize}";
+
+            //    //409
+            //    var resTotalCount = 190;
+            //    pageCount = (int)Math.Ceiling((double)resTotalCount / pageSize);
+            //    page++;
+            //} while (page <= pageCount);
+
+            //var str = "abcdefghijklmn";
+            //var res = str.EndsWith("jkl");
+            //Console.WriteLine(CreatSign());
+
+
+            //var list = Enumerable.Range(0, 10).ToList();
+            ////foreach (var item in list)
+            ////{
+            ////    Console.WriteLine(item);
+            ////}
+            //list.ForEach(i =>
+            //{
+            //    if (i == 5)
+            //    {
+            //        return;
+            //    }
+            //    Console.WriteLine(i);
+            //});
+
+            //var nowDate = Convert.ToDateTime("2021-02-02 9:29:33");
+            //var createDate = Convert.ToDateTime("2021-02-03 15:03:33").Date;
+            //if (nowDate.Date.AddDays(-1) > createDate || (nowDate.Date.AddDays(-1) == createDate && (nowDate.Hour == 9 && nowDate.Minute >= 30 || nowDate.Hour > 9)))
+            //{
+            //    Console.WriteLine("到了第二天九点半以后了");
+            //}
+
+
+
             Console.ReadKey();
+        }
+
+        private  void ShowDuplicatedTimes()
+        {
+            int[] array = { 10, 5, 10, 2, 2, 3, 4, 5, 5, 6, 7, 8, 9, 11, 12, 12 };
+            var dict = new Dictionary<int, int>();
+
+            foreach (var value in array)
+            {
+                if (dict.ContainsKey(value))
+                    dict[value]++;
+                else
+                    dict[value] = 1;
+            }
+
+            foreach (var pair in dict)
+                Console.WriteLine("Value {0} occurred {1} times.", pair.Key, pair.Value);
+        }
+
+        public  string CreatSign()
+        {
+            var stringToSign = @"sv=&ss=&srt=o&sp=r&se=2020-10-24T14:57:50Z&st=2020-10-24T06:57:50Z&spr=https";
+
+            var StringToSign = "GET\n\n\n\n\n\n\n\n\n\n\n\nx-ms-date:Fri, 26 Jun 2015 23:39:12 GMT\nx-ms-version:2015-02-21\n/myaccount/mycontainer\ncomp:metadata\nrestype:container\ntimeout:20";
+
+
+            //var utf8 = new UTF8Encoding();  //   Create   a   UTF-8   encoding. 
+            //string s1 = utf8.GetString(utf8.GetBytes(stringToSign));
+
+            //var s2 = System.Web.HttpUtility.UrlDecode(s1);
+            //var sig = SHA256.Create().ComputeHash(s2);
+
+
+            //var buffer = Encoding.UTF8.GetBytes(stringToSign);
+            //var data = SHA256.Create().ComputeHash(buffer);
+            //var sb = new StringBuilder();
+            //foreach (var t in data)
+            //{
+            //    sb.Append(t.ToString());
+            //};
+            var sb = new StringBuilder();
+            var key = Encoding.UTF8.GetBytes("OHNR7OD2tNRfpy+dBvJEc4ZeUKjwwByWY8ZkIx96B9QMuVcTOKgrDx0AxRIWOWRHXbJU1e/xv0HFpjDyGQIAXw==");
+            using (var hmacsha256 = new HMACSHA256(key))
+            {
+                byte[] hashmessage = hmacsha256.ComputeHash(Encoding.UTF8.GetBytes(StringToSign));
+
+                
+                foreach (var t in hashmessage)
+                {
+                    sb.Append(t.ToString("x2"));
+                };
+            }
+           
+
+            var sig = sb.ToString();
+
+
+            return sig;
         }
 
 
 
-
-
-        private static void VerifyPassword()
+        private  void VerifyPassword()
         {
             var regex = new System.Text.RegularExpressions.Regex(@"^(?=.*\d)(?=.*[a-zA-Z]).{8,16}$", System.Text.RegularExpressions.RegexOptions.IgnorePatternWhitespace);
             if (regex.IsMatch("12347*^……12"))
@@ -136,7 +219,7 @@ namespace Demo
             }
         }
 
-        private static void StringJoinNewMethod()
+        private  void StringJoinNewMethod()
         {
             List<Product> p = new List<Product>()
             {
@@ -158,7 +241,7 @@ namespace Demo
             var test = string.Join(',', null);
         }
 
-        private static void PassWordNewMethod()
+        private  void PassWordNewMethod()
         {
             Console.Write("Enter a password: ");
             string password = Console.ReadLine();
@@ -173,16 +256,16 @@ namespace Demo
             Console.WriteLine($"Salt: {Convert.ToBase64String(salt)}");
 
             // derive a 256-bit subkey (use HMACSHA1 with 10,000 iterations)
-            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                password: password,
-                salt: salt,
-                prf: KeyDerivationPrf.HMACSHA1,
-                iterationCount: 10000,
-                numBytesRequested: 256 / 8));
-            Console.WriteLine($"Hashed: {hashed}");
+            //string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+            //    password: password,
+            //    salt: salt,
+            //    prf: KeyDerivationPrf.HMACSHA1,
+            //    iterationCount: 10000,
+            //    numBytesRequested: 256 / 8));
+            //Console.WriteLine($"Hashed: {hashed}");
         }
 
-        private static XDocument XDocument()
+        private  XDocument XDocument()
         {
             var xmlString1 =
                 "<policies>\r\n\t<inbound>\r\n\t\t<base />\r\n\t\t<rate-limit-by-key calls=\"20\" renewal-period=\"60\" counter-key=\"@(context.Subscription?.Key ?? &quot;anonymous&quot;)\" />\r\n\t\t<rate-limit-by-key calls=\"1000\" renewal-period=\"60\" counter-key=\"@(context.Subscription?.Key ?? &quot;anonymous&quot;)\" increment-condition=\"@(context.Response.StatusCode &gt;= 200 &amp;&amp; context.Response.StatusCode &lt; 300)\" />\r\n\t\t<rate-limit-by-key calls=\"800\" renewal-period=\"60\" counter-key=\"@(context.Request.IpAddress)\" />\r\n\t</inbound>\r\n\t<backend>\r\n\t\t<base />\r\n\t</backend>\r\n\t<outbound>\r\n\t\t<base />\r\n\t</outbound>\r\n\t<on-error>\r\n\t\t<base />\r\n\t</on-error>\r\n</policies>";
@@ -205,7 +288,7 @@ namespace Demo
             return xml;
         }
 
-        private static void NewMethod()
+        private  void NewMethod()
         {
             Product p = null;
             if ("".Contains("e"))
@@ -217,7 +300,7 @@ namespace Demo
             Console.WriteLine(test);
         }
 
-        private static void UrlNewMethod()
+        private  void UrlNewMethod()
         {
             try
             {
